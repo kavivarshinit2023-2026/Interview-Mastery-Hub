@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Management MCQ Quiz | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .quiz-container {
+            padding: 150px 8% 100px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .quiz-header {
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(129,140,248,0.2);
+        }
+        .quiz-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        .progress {
+            height: 100%;
+            width: 4%;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            transition: width 0.4s;
+        }
+        .question-counter {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .question-box {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            border: 1px solid rgba(129,140,248,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: none;
+        }
+        .question-box.active {
+            display: block;
+        }
+        .question-text {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .options {
+            display: grid;
+            gap: 20px;
+        }
+        .option {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background: rgba(129,140,248,0.2);
+            border-color: #818cf8;
+            transform: translateX(10px);
+        }
+        .option.selected {
+            background: rgba(129,140,248,0.4);
+            border-color: #818cf8;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .nav-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(129,140,248,0.4);
+        }
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 80px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            margin-top: 50px;
+        }
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#818cf8 0deg, #818cf8 0deg, rgba(255,255,255,0.1) 0deg);
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #818cf8;
+        }
+        .result-message {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="time-management.html" class="back-link">← Back to Time Management</a>
+
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Time Management Quiz</h1>
+            <p class="quiz-info">15 real-world questions • One at a time</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-counter">Question <span id="current">1</span> of 15</div>
+        </div>
+
+        <!-- 15 Time Management Questions -->
+        <div class="question-box active">
+            <div class="question-text">Which tool is most commonly used for prioritizing tasks?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">To-do list</div>
+                <div class="option" onclick="selectOption(this)">Eisenhower Matrix</div>
+                <div class="option" onclick="selectOption(this)">Calendar only</div>
+                <div class="option" onclick="selectOption(this)">Notes app</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The Pomodoro Technique involves working in focused intervals of:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">90 minutes</div>
+                <div class="option" onclick="selectOption(this)">25 minutes</div>
+                <div class="option" onclick="selectOption(this)">60 minutes</div>
+                <div class="option" onclick="selectOption(this)">10 minutes</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">What does the "Urgent & Important" quadrant in Eisenhower Matrix represent?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Tasks to delegate</div>
+                <div class="option" onclick="selectOption(this)">Do immediately</div>
+                <div class="option" onclick="selectOption(this)">Schedule later</div>
+                <div class="option" onclick="selectOption(this)">Eliminate</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The best way to handle multiple deadlines is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Work on the easiest first</div>
+                <div class="option" onclick="selectOption(this)">Prioritize based on impact & urgency</div>
+                <div class="option" onclick="selectOption(this)">Multitask between all</div>
+                <div class="option" onclick="selectOption(this)">Work overtime daily</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">What is the biggest enemy of effective time management?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Planning</div>
+                <div class="option" onclick="selectOption(this)">Procrastination</div>
+                <div class="option" onclick="selectOption(this)">Using tools</div>
+                <div class="option" onclick="selectOption(this)">Setting goals</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The best time to plan your day is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">During lunch</div>
+                <div class="option" onclick="selectOption(this)">The night before</div>
+                <div class="option" onclick="selectOption(this)">When you start work</div>
+                <div class="option" onclick="selectOption(this)">At the end of the day</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">Multitasking usually leads to:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Higher productivity</div>
+                <div class="option" onclick="selectOption(this)">More errors & lower quality</div>
+                <div class="option" onclick="selectOption(this)">Faster completion</div>
+                <div class="option" onclick="selectOption(this)">Better focus</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The 80/20 rule (Pareto Principle) states that:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">80% of results come from 20% of efforts</div>
+                <div class="option" onclick="selectOption(this)">All tasks are equally important</div>
+                <div class="option" onclick="selectOption(this)">You should work 80 hours a week</div>
+                <div class="option" onclick="selectOption(this)">Planning takes 80% of time</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">To avoid procrastination, the best first step is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Wait for motivation</div>
+                <div class="option" onclick="selectOption(this)">Start with the smallest action (2-minute rule)</div>
+                <div class="option" onclick="selectOption(this)">Do it tomorrow</div>
+                <div class="option" onclick="selectOption(this)">Make a long to-do list</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The best way to handle interruptions is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Respond immediately</div>
+                <div class="option" onclick="selectOption(this)">Use time blocking & batch similar tasks</div>
+                <div class="option" onclick="selectOption(this)">Never say no</div>
+                <div class="option" onclick="selectOption(this)">Work longer hours</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">A realistic daily to-do list should have:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">20+ tasks</div>
+                <div class="option" onclick="selectOption(this)">3-5 high-priority tasks</div>
+                <div class="option" onclick="selectOption(this)">Only urgent tasks</div>
+                <div class="option" onclick="selectOption(this)">No tasks</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The "Eat That Frog" method means:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Do fun tasks first</div>
+                <div class="option" onclick="selectOption(this)">Do your hardest task first thing in the morning</div>
+                <div class="option" onclick="selectOption(this)">Skip difficult tasks</div>
+                <div class="option" onclick="selectOption(this)">Delegate everything</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">Time blocking is most effective when:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">You leave it flexible</div>
+                <div class="option" onclick="selectOption(this)">You schedule focused blocks for deep work</div>
+                <div class="option" onclick="selectOption(this)">You only block meetings</div>
+                <div class="option" onclick="selectOption(this)">You do it once a month</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">What should you do when you miss a deadline?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Blame others</div>
+                <div class="option" onclick="selectOption(this)">Communicate early, learn from it, and adjust</div>
+                <div class="option" onclick="selectOption(this)">Ignore it</div>
+                <div class="option" onclick="selectOption(this)">Work less next time</div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">The best way to say "no" to extra tasks is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Ignore the request</div>
+                <div class="option" onclick="selectOption(this)">Politely explain your current priorities</div>
+                <div class="option" onclick="selectOption(this)">Accept everything</div>
+                <div class="option" onclick="selectOption(this)">Get angry</div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+            <button class="nav-btn" id="submitBtn" onclick="showResults()" style="display:none;">Submit Quiz</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="score-circle" id="scoreCircle">0%</div>
+            <div class="result-message" id="resultMsg"></div>
+            <button class="nav-btn" onclick="location.reload()">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        const totalQuestions = 15;
+        let currentQuestion = 1;
+        let answers = new Array(totalQuestions).fill(null);
+
+        // Correct answers (0-based index of correct option)
+        const correctAnswers = [
+            1,  // Q1: Eisenhower Matrix
+            1,  // Q2: 25 minutes
+            1,  // Q3: Do immediately
+            1,  // Q4: Prioritize based on impact & urgency
+            1,  // Q5: Procrastination
+            1,  // Q6: The night before
+            1,  // Q7: More errors & lower quality
+            0,  // Q8: 80% results from 20% efforts
+            1,  // Q9: Start with smallest action
+            1,  // Q10: Time blocking & batch tasks
+            1,  // Q11: 3-5 high-priority tasks
+            1,  // Q12: Do hardest task first
+            1,  // Q13: Schedule focused blocks
+            1,  // Q14: Communicate early & learn
+            1   // Q15: Politely explain priorities
+        ];
+
+        function selectOption(el) {
+            const options = el.parentNode.children;
+            for (let opt of options) opt.classList.remove('selected');
+            el.classList.add('selected');
+            answers[currentQuestion - 1] = Array.from(options).indexOf(el);
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('current').textContent = currentQuestion;
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').style.display = currentQuestion === totalQuestions ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = currentQuestion === totalQuestions ? 'inline-block' : 'none';
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion - 1] === null) {
+                alert('Please select an answer first!');
+                return;
+            }
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion++;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function prevQuestion() {
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion--;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function showResults() {
+            let score = 0;
+            answers.forEach((ans, i) => {
+                if (ans === correctAnswers[i]) score++;
+            });
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('scoreCircle').textContent = percentage + '%';
+            document.getElementById('scoreCircle').style.background = `conic-gradient(#818cf8 ${percentage * 3.6}deg, rgba(255,255,255,0.1) 0deg)`;
+
+            let msg = "";
+            if (percentage >= 85) msg = "Master of Time! You're super efficient! ⏰🔥";
+            else if (percentage >= 70) msg = "Very strong! Just a little polish needed 💪";
+            else if (percentage >= 50) msg = "Good foundation! Practice more techniques";
+            else msg = "Great effort! Time management is a skill — keep improving!";
+
+            document.getElementById('resultMsg').textContent = msg;
+            document.querySelector('.navigation').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

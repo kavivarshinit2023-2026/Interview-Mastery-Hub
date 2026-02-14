@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin • Interview Mastery Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #0b0018;
+      --sidebar-bg: rgba(12, 4, 38, 0.96);
+      --card-bg: rgba(22, 12, 55, 0.82);
+      --accent: #b388ff;
+      --accent-glow: #d1b3ff;
+      --neon: #00eaff;
+      --neon-glow: #66f9ff;
+      --text: #ede7ff;
+      --text-dim: #b0a8e0;
+      --border: rgba(179, 136, 255, 0.22);
+      --shadow: 0 12px 42px rgba(140, 80, 255, 0.22);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 15% 15%, #1a0033, var(--bg) 60%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 268px;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(14px) saturate(180%);
+      border-right: 1px solid var(--border);
+      padding: 2.2rem 0;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 0 2.2rem 2.8rem;
+      font-size: 1.9rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(100deg, var(--accent), var(--neon));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 1.3rem 2.2rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all 0.28s ease;
+    }
+    .sidebar a i { margin-right: 14px; width: 22px; text-align: center; font-size: 1.2rem; }
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: white;
+      background: linear-gradient(to right, rgba(179,136,255,0.14), rgba(0,234,255,0.09));
+    }
+    .sidebar a.active::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 42%;
+      background: linear-gradient(var(--accent), var(--neon));
+      border-radius: 0 8px 8px 0;
+    }
+    .sidebar .bottom {
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+    .main {
+      margin-left: 268px;
+      flex: 1;
+      padding: 2.4rem 2.8rem;
+    }
+    header {
+      background: rgba(18, 8, 45, 0.92);
+      backdrop-filter: blur(18px);
+      padding: 1.4rem 2.8rem;
+      border-radius: 18px;
+      margin-bottom: 2.8rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      background: linear-gradient(110deg, var(--accent-glow), var(--neon-glow));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem 1.8rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .number {
+      font-size: 3.8rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--accent-glow), var(--neon-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: rgba(140, 80, 255, 0.22);
+      color: var(--neon);
+      padding: 1.3rem 1.6rem;
+      text-align: left;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    td {
+      padding: 1.3rem 1.6rem;
+      border-top: 1px solid var(--border);
+    }
+    .empty, .loading {
+      text-align: center;
+      padding: 6rem 2rem;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+    #logout {
+      color: #ff6b6b !important;
+    }
+    #logout:hover {
+      background: rgba(255, 107, 107, 0.12) !important;
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-header">Admin</div>
+    <a href="#users" class="active"><i class="fas fa-users"></i> Users</a>
+    <div class="bottom">
+      <a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+  <main class="main">
+    <header>
+      <div class="logo">Interview Mastery Hub • Admin</div>
+    </header>
+    <div class="stats">
+      <div class="card">
+        <div class="number" id="total-users">—</div>
+        <div>Total Students + Freshers</div>
+      </div>
+      <div class="card">
+        <div class="number" id="total-students">—</div>
+        <div>Students</div>
+      </div>
+      <div class="card">
+        <div class="number" id="total-freshers">—</div>
+        <div>Freshers</div>
+      </div>
+    </div>
+    <div id="users">
+      <h2 style="color:#c084fc; margin-bottom:1.4rem;">Students & Freshers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Joined On</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody">
+          <tr><td colspan="4" class="loading">Loading real-time data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    query,
+    orderBy,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXwyhDKEzSToQH56JNJNWDJDnObl4Sq_0",
+    authDomain: "interviewmasteryhub-bf0e2.firebaseapp.com",
+    projectId: "interviewmasteryhub-bf0e2",
+    storageBucket: "interviewmasteryhub-bf0e2.firebasestorage.app",
+    messagingSenderId: "818885694064",
+    appId: "1:818885694064:web:3b390dac10ef3a7e785ab5",
+    measurementId: "G-GCT7XJRLVK"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Logout handler
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      await signOut(auth);
+      window.location.href = "admin-login.html";
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Logout failed: " + error.message);
+    }
+  });
+
+  // Auth state changed
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "admin-login.html";
+      return;
+    }
+    // Admin authenticated → start listener
+    startRealTimeListener();
+  });
+
+  function startRealTimeListener() {
+    const usersRef = collection(db, "users");
+    
+    // Normal query with sorting (comment out if you want to test without orderBy)
+    const q = query(usersRef, orderBy("createdAt", "desc"));
+    
+    // If sorting causes issues → use this instead temporarily:
+    // const q = query(usersRef);
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const tbody = document.getElementById("users-tbody");
+      tbody.innerHTML = "";
+
+      let total = 0;
+      let students = 0;
+      let freshers = 0;
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const roleRaw = data.role || data.userType || "";
+        const role = roleRaw.toLowerCase().trim();
+
+        if (role !== "student" && role !== "fresher") return;
+
+        total++;
+        if (role === "student") students++;
+        if (role === "fresher") freshers++;
+
+        const joined = data.createdAt
+          ? new Date(data.createdAt.toDate ? data.createdAt.toDate() : data.createdAt)
+              .toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' })
+          : "—";
+
+        const name = data.name || data.fullName || data.displayName || "—";
+        const email = data.email || "—";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>${email}</td>
+          <td style="text-transform: capitalize;">${role}</td>
+          <td>${joined}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      if (total === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty">No students or freshers found</td></tr>`;
+      }
+
+      document.getElementById("total-users").textContent = total;
+      document.getElementById("total-students").textContent = students;
+      document.getElementById("total-freshers").textContent = freshers;
+
+    }, (error) => {
+      console.error("Real-time listener error:", error);
+
+      let msg = "Error loading real-time data";
+      if (error.code === "permission-denied") {
+        msg = "Permission denied – Firestore rules-ல users collection-க்கு read access இல்லை";
+      }
+
+      document.getElementById("users-tbody").innerHTML = 
+        `<tr><td colspan="4" class="empty">${msg}<br><small>Browser console பாருங்கள் (F12)</small></td></tr>`;
+    });
+
+    // Cleanup on page leave
+    window.addEventListener('beforeunload', () => unsubscribe());
+  }
+</script>
+</body>
+</html>

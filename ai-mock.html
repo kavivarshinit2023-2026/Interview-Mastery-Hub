@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Soft Skills Mock Interview - Interview Mastery Hub</title>
+  <style>
+    body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a15; color:#e0e0ff; height:100vh; display:flex; flex-direction:column; }
+    .header { background:#1a1a2e; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #2a2a4a; }
+    .chat-container { flex:1; max-width:900px; margin:0 auto; width:100%; padding:1.5rem; overflow-y:auto; display:flex; flex-direction:column; gap:1.2rem; }
+    .message { max-width:80%; padding:1rem 1.4rem; border-radius:18px; line-height:1.5; position:relative; }
+    .bot { background:#1e1e38; align-self:flex-start; border-bottom-left-radius:4px; }
+    .user { background:linear-gradient(135deg,#6b4eff,#9b7aff); color:white; align-self:flex-end; border-bottom-right-radius:4px; }
+    .input-area { background:#141422; padding:1.2rem 2rem; border-top:1px solid #2a2a4a; display:flex; gap:1rem; }
+    #userInput { flex:1; padding:0.9rem 1.4rem; border:1px solid #3a3a5a; border-radius:12px; background:#1a1a2e; color:#e0e0ff; font-size:1.05rem; outline:none; }
+    #userInput:focus { border-color:#7b5eff; box-shadow:0 0 0 3px rgba(123,94,255,0.2); }
+    button { padding:0.9rem 1.8rem; background:#7b5eff; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer; transition:0.2s; }
+    button:hover { background:#9b7aff; }
+    .typing { display:inline-block; padding:0.4rem 0.8rem; background:#25253f; border-radius:12px; font-style:italic; color:#a0a0c0; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>AI Soft Skills Mock Interview</h2>
+    <button onclick="window.location.href='mock-interview.html'">Back to Modes</button>
+  </div>
+
+  <div class="chat-container" id="chatContainer">
+    <div class="message bot">
+      👋 Hello! I'm your AI HR Interviewer for soft skills and behavioral practice.<br><br>
+      Companies like TCS, Infosys, Wipro, Accenture focus on behavioral questions in HR rounds.<br><br>
+      Please tell me your target job role and company:<br>
+      • Role (e.g., Software Engineer, Tester, Business Analyst, Developer, Consultant)<br>
+      • Company (e.g., TCS, Infosys, Wipro, Accenture)<br><br>
+      Example: "Software Engineer at TCS" or "Tester in Infosys" or "Business Analyst at Accenture"
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Type your answer here..." autofocus />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const userInput = document.getElementById('userInput');
+
+    let interviewState = {
+      role: "General",
+      company: null,
+      stage: "waiting_role",
+      questionsAsked: 0,
+      answers: []
+    };
+
+    // Role-based question pools (soft skills focus)
+    const roleQuestionPools = {
+      "software engineer": [
+        "Tell me about yourself and your experience in software development.",
+        "Describe a time you faced a technical challenge in a project and how you solved it.",
+        "How do you handle tight deadlines or changing requirements in coding?",
+        "Tell me about a time you collaborated with a team to deliver a feature.",
+        "How do you stay updated with new technologies and tools?",
+        "Describe a situation where you had to debug a complex issue under pressure.",
+        "What motivates you in your role as a software engineer?",
+        "Tell me about a time you received feedback on your code and how you responded.",
+        "How do you prioritize tasks when working on multiple features?",
+        "Why do you want to work as a Software Engineer in our company?"
+      ],
+      "tester": [
+        "Tell me about yourself and your testing experience.",
+        "Describe a time you found a critical bug and how you reported it.",
+        "How do you handle repetitive testing tasks without losing attention to detail?",
+        "Tell me about a time you worked closely with developers to fix issues.",
+        "How do you manage stress when there are many defects before release?",
+        "Describe a situation where testing deadlines were tight – how did you handle it?",
+        "What is your approach to learning new testing tools or automation?",
+        "Tell me about a time you disagreed with a developer on a bug severity.",
+        "How do you ensure clear communication in defect reporting?",
+        "Why do you want to work as a Tester in our company?"
+      ],
+      "business analyst": [
+        "Tell me about yourself and your experience in requirements gathering.",
+        "Describe a time you clarified ambiguous requirements from stakeholders.",
+        "How do you handle conflicting demands from different stakeholders?",
+        "Tell me about a time you bridged the gap between business and technical teams.",
+        "What is your approach to documenting and prioritizing requirements?",
+        "Describe a situation where project scope changed – how did you adapt?",
+        "How do you ensure effective communication with clients or end-users?",
+        "Tell me about a time you analyzed data to support a business decision.",
+        "How do you manage expectations when requirements cannot be met?",
+        "Why do you want to work as a Business Analyst in our company?"
+      ],
+      "consultant": [
+        "Tell me about yourself and your consulting experience.",
+        "Describe a time you advised a client on a solution and implemented it.",
+        "How do you handle client expectations and difficult conversations?",
+        "Tell me about a time you adapted to a new industry or client domain.",
+        "What is your approach to building trust with clients?",
+        "Describe a challenging consulting project and how you succeeded.",
+        "How do you manage multiple client projects simultaneously?",
+        "Tell me about a time you dealt with resistance to change from a client.",
+        "How do you stay organized in a client-facing role?",
+        "Why do you want to work as a Consultant in our company?"
+      ],
+      "default": [
+        "Tell me about yourself.",
+        "What are your key strengths and one area you are improving?",
+        "Describe a team project where you contributed significantly.",
+        "How do you handle disagreements in a team?",
+        "Tell me about a time you met a challenging deadline.",
+        "Why do you want to work in our company?",
+        "How do you manage stress during busy periods?",
+        "Describe a failure and what you learned from it.",
+        "How do you stay organized and manage time?",
+        "Do you have any questions for us?"
+      ]
+    };
+
+    // Company-specific overrides or additions (optional)
+    const companyQuestionPools = {
+      "TCS": [
+        "Are you comfortable with relocation or night shifts?",
+        "Tell me about your willingness to work in different locations."
+      ],
+      "INFOSYS": [
+        "How do you adapt to new technologies quickly?",
+        "Tell me about your learning agility."
+      ]
+    };
+
+    function addMessage(text, isUser = false) {
+      const msg = document.createElement('div');
+      msg.className = `message ${isUser ? 'user' : 'bot'}`;
+      msg.innerHTML = text;
+      chatContainer.appendChild(msg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function showTyping() {
+      const typing = document.createElement('div');
+      typing.className = 'message bot typing';
+      typing.innerHTML = 'AI Interviewer is typing...';
+      typing.id = 'typingIndicator';
+      chatContainer.appendChild(typing);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return typing;
+    }
+
+    function removeTyping() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) typing.remove();
+    }
+
+    function simulateAIResponse(callback) {
+      showTyping();
+      setTimeout(() => {
+        removeTyping();
+        callback();
+      }, 1800 + Math.random() * 2500);
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage(text, true);
+      userInput.value = '';
+      simulateAIResponse(() => handleAIResponse(text));
+    }
+
+    function handleAIResponse(userText) {
+      if (interviewState.stage === "waiting_role") {
+        const lower = userText.toLowerCase();
+
+        // Detect role (more keywords for accuracy)
+        const roleKeywords = {
+          "software engineer": ["software engineer", "developer", "sde", "full stack", "java developer", "python developer"],
+          "tester": ["tester", "qa", "quality assurance", "test engineer", "automation tester"],
+          "business analyst": ["business analyst", "ba", "system analyst", "requirements analyst"],
+          "consultant": ["consultant", "associate consultant", "it consultant", "business consultant"]
+        };
+
+        let detectedRole = "default";
+        for (const [key, keywords] of Object.entries(roleKeywords)) {
+          if (keywords.some(kw => lower.includes(kw))) {
+            detectedRole = key;
+            break;
+          }
+        }
+
+        interviewState.role = detectedRole.charAt(0).toUpperCase() + detectedRole.slice(1);
+
+        // Detect company
+        let companyName = "IT Services Company";
+        if (lower.includes("tcs")) companyName = "TCS";
+        else if (lower.includes("infosys")) companyName = "Infosys";
+        else if (lower.includes("wipro")) companyName = "Wipro";
+        else if (lower.includes("accenture")) companyName = "Accenture";
+        else if (lower.includes("cognizant")) companyName = "Cognizant";
+
+        interviewState.company = companyName;
+
+        interviewState.stage = "asking_questions";
+        interviewState.questionsAsked = 0;
+
+        addMessage(`Great! Starting soft skills mock for <strong>${interviewState.role}</strong> role at <strong>${interviewState.company}</strong>.<br><br><strong>Question 1:</strong><br>Tell me about yourself.<br><br>(Tip: Keep it professional, 60-90 seconds)`);
+      }
+      else if (interviewState.stage === "asking_questions") {
+        interviewState.answers.push(userText);
+        interviewState.questionsAsked++;
+
+        // Get questions based on detected role
+        let questions = roleQuestionPools[interviewState.role.toLowerCase()] || roleQuestionPools["default"];
+
+        // Add company-specific if available
+        if (interviewState.company in companyQuestionPools) {
+          questions = [...questions, ...companyQuestionPools[interviewState.company]];
+        }
+
+        if (interviewState.questionsAsked < questions.length) {
+          const nextQ = questions[interviewState.questionsAsked];
+          addMessage(`<strong>Question ${interviewState.questionsAsked + 1}:</strong><br>${nextQ}<br><br>(Tip: Use STAR method - Situation, Task, Action, Result)`);
+        } else {
+          interviewState.stage = "feedback";
+          addMessage(`Thank you! You've completed the mock interview.<br><br>Preparing overall feedback based on your answers...`);
+          
+          setTimeout(() => {
+            addMessage(generateOverallFeedback(interviewState.answers, interviewState.role, interviewState.company));
+          }, 3000);
+        }
+      }
+      else if (interviewState.stage === "feedback") {
+        addMessage("Session completed. Type 'new' to restart or 'back' to main menu.");
+      }
+    }
+
+    function generateOverallFeedback(answers, role, company) {
+      let strengths = [];
+      let improvements = [];
+      let score = 7.8;
+
+      const allText = answers.join(" ").toLowerCase();
+
+      // Role-agnostic common analysis
+      if (allText.includes("team") || allText.includes("collaborat")) strengths.push("Strong teamwork and collaboration skills shown.");
+      if (allText.includes("learn") || allText.includes("adapt")) strengths.push("Good adaptability and learning mindset.");
+      if (answers.some(a => a.length < 50)) improvements.push("Add more specific examples and details to answers.");
+
+      let roleTip = "";
+      if (role.toLowerCase() === "software engineer") {
+        roleTip = "As a Software Engineer, focus more on technical problem-solving stories with impact.";
+      } else if (role.toLowerCase() === "tester") {
+        roleTip = "As a Tester, emphasize attention to detail and effective bug communication.";
+      } else if (role.toLowerCase() === "business analyst") {
+        roleTip = "As a Business Analyst, highlight stakeholder management and clear requirements gathering.";
+      }
+
+      let companyTip = company === "TCS" ? "<br>TCS Tip: Show flexibility for relocation/night shifts." : "";
+
+      let feedback = `Overall Feedback for ${role} role:<br><br>
+      <strong>Strengths:</strong><br>• ${strengths.join("<br>• ") || "Good effort overall."}<br><br>
+      <strong>Areas to Improve:</strong><br>• ${improvements.join("<br>• ") || "Keep practicing structured answers."}<br><br>
+      <strong>Tips:</strong><br>• Use STAR method consistently.<br>• Include specific outcomes/numbers.<br>• Research company values.<br>${roleTip}${companyTip}<br><br>
+      <strong>Score: ${score.toFixed(1)}/10</strong><br>You're on the right track! Practice more to excel in HR rounds.`;
+
+      return feedback;
+    }
+
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+
+</body>
+</html>

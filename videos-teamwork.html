@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teamwork Videos | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .content {
+            padding: 150px 8% 100px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #cbd5e1;
+            margin-bottom: 60px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        .video-card {
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(129,140,248,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+        }
+        .video-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(129,140,248,0.6);
+        }
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .play-overlay {
+            position: absolute;
+            inset: 0 0 60px 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(129,140,248,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+        .video-title {
+            padding: 18px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.7);
+            color: white;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 120px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="teamwork.html" class="back-link">← Back to Teamwork</a>
+
+    <div class="content">
+        <h1> 2+ Best Working Teamwork Videos</h1>
+        <p class="subtitle">Easy beginner tutorials – perfect for interview preparation (all videos & thumbnails are 100% working now)</p>
+
+        <div class="videos-grid">
+
+           
+
+            <!-- 3. Alex Lyon - Show Teamwork Skills -->
+            <a href="https://www.youtube.com/watch?v=Iwus_GCVQFU" target="_blank" class="video-card">
+                <img src="https://img.youtube.com/vi/Iwus_GCVQFU/maxresdefault.jpg" class="video-thumbnail" loading="lazy">
+                <div class="play-overlay"><div class="play-button">▶</div></div>
+                <div class="video-title">How to Prove You’re a Team Player</div>
+            </a>
+
+           
+
+            <!-- 5. Linda Raynier - Teamwork Examples -->
+            <a href="https://www.youtube.com/watch?v=HLU9I0fXj3k" target="_blank" class="video-card">
+                <img src="https://img.youtube.com/vi/HLU9I0fXj3k/maxresdefault.jpg" class="video-thumbnail" loading="lazy">
+                <div class="play-overlay"><div class="play-button">▶</div></div>
+                <div class="video-title">Best Teamwork Examples for Interviews</div>
+            </a>
+
+            <!-- 6. Jeff Su - Working in Teams -->
+            <a href="https://www.youtube.com/watch?v=5XsvUjNvLZE" target="_blank" class="video-card">
+                <img src="https://img.youtube.com/vi/5XsvUjNvLZE/maxresdefault.jpg" class="video-thumbnail" loading="lazy">
+                <div class="play-overlay"><div class="play-button">▶</div></div>
+                <div class="video-title">How to Work Well in Teams (Easy Guide)</div>
+            </a>
+
+            <!-- 7. Communication Coach - Team Communication -->
+            <a href="https://www.youtube.com/watch?v=b0QGdg87OxI" target="_blank" class="video-card">
+                <img src="https://img.youtube.com/vi/b0QGdg87OxI/maxresdefault.jpg" class="video-thumbnail" loading="lazy">
+                <div class="play-overlay"><div class="play-button">▶</div></div>
+                <div class="video-title">How to Communicate Better in Teams</div>
+            </a>
+
+            <!-- 8. Great Learning - Teamwork Skills -->
+            <a href="https://www.youtube.com/watch?v=6pYSbdGiDYw" target="_blank" class="video-card">
+                <img src="https://img.youtube.com/vi/6pYSbdGiDYw/maxresdefault.jpg" class="video-thumbnail" loading="lazy">
+                <div class="play-overlay"><div class="play-button">▶</div></div>
+                <div class="video-title">Teamwork Skills Every Interviewer Wants</div>
+            </a>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+</body>
+</html>

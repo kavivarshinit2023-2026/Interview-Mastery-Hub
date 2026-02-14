@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Signup | Interview Mastery Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      --card-bg: rgba(30, 30, 60, 0.75);
+      --text-primary: #e0e0ff;
+      --text-secondary: #a0a0cc;
+      --accent: #a78bfa;
+      --accent-hover: #c084fc;
+      --border: rgba(100, 100, 255, 0.18);
+      --input-bg: rgba(40, 40, 80, 0.6);
+      --error: #ff6b6b;
+    }
+
+    body.light-theme {
+      --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #c3dafe 50%, #a5b4fc 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --accent: #7c3aed;
+      --accent-hover: #6d28d9;
+      --border: rgba(124, 58, 237, 0.2);
+      --input-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-attachment: fixed;
+    }
+
+    .auth-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0a0cc'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 18px;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 12px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(167, 139, 250, 0.3);
+    }
+
+    .toggle-link {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--text-secondary);
+    }
+
+    .toggle-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+  </style>
+</head>
+<body class="dark-theme">
+
+  <div class="auth-container">
+    <a href="next-page.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Choose Path
+    </a>
+     <div class="logo">Interview Mastery Hub</div>
+      <p class="subtitle">Unlock your interview success</p>
+
+      <div class="tabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="signup">Sign Up</div>
+      </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" class="auth-form">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+        <div class="error" id="loginEmailError">Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+        <div class="error" id="loginPasswordError">Password is required</div>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signupForm" class="auth-form" style="display: none;">
+      <div class="form-group">
+        <label for="signupName">Full Name</label>
+        <input type="text" id="signupName" placeholder="Your full name" required>
+        <div class="error" id="signupNameError">Name is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+        <div class="error" id="signupEmailError">Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" placeholder="Create a strong password" required>
+        <div class="error" id="signupPasswordError">Password must be at least 6 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label for="signupConfirmPassword">Confirm Password</label>
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+        <div class="error" id="signupConfirmError">Passwords do not match</div>
+      </div>
+
+      <!-- User Type Selection -->
+      <div class="form-group">
+        <label for="userType">Who are you?</label>
+        <select id="userType" required>
+          <option value="" disabled selected>Select your role</option>
+          <option value="student">Student (School / College)</option>
+          <option value="fresher">Fresher (First-time job seeker)</option>
+          <option value="experienced">Experienced Professional</option>
+        </select>
+        <div class="error" id="userTypeError">Please select your role</div>
+      </div>
+
+      <button type="submit" class="btn">Create Account</button>
+    </form>
+
+    <div class="toggle-link" id="toggleText">
+      Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+    </div>
+  </div>
+
+  <script>
+    // Firebase Config & Initialize
+    const firebaseConfig = {
+      apiKey: "AIzaSyAXwyhDKEzSToQH56JNJNWDJDnObl4Sq_0",
+      authDomain: "interviewmasteryhub-bf0e2.firebaseapp.com",
+      projectId: "interviewmasteryhub-bf0e2",
+      storageBucket: "interviewmasteryhub-bf0e2.firebasestorage.app",
+      messagingSenderId: "818885694064",
+      appId: "1:818885694064:web:3b390dac10ef3a7e785ab5",
+      measurementId: "G-GCT7XJRLVK"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Tab switching logic
+    const tabs = document.querySelectorAll('.tab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const toggleText = document.getElementById('toggleText');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        if (tab.dataset.tab === 'login') {
+          loginForm.style.display = 'block';
+          signupForm.style.display = 'none';
+          toggleText.innerHTML = `Don't have an account? <a href="#" id="switchToSignup">Sign up</a>`;
+        } else {
+          loginForm.style.display = 'none';
+          signupForm.style.display = 'block';
+          toggleText.innerHTML = `Already have an account? <a href="#" id="switchToLogin">Login</a>`;
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'switchToSignup' || e.target.id === 'switchToLogin') {
+        e.preventDefault();
+        const signupTab = document.querySelector('.tab[data-tab="signup"]');
+        const loginTab = document.querySelector('.tab[data-tab="login"]');
+        if (e.target.id === 'switchToSignup') signupTab.click();
+        else loginTab.click();
+      }
+    });
+
+    // Helper: Show error
+    function showError(id, show = true) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'block' : 'none';
+    }
+
+    // Login
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      showError('loginEmailError', false);
+      showError('loginPasswordError', false);
+
+      if (!email.includes('@')) {
+        showError('loginEmailError', true);
+        return;
+      }
+      if (!password) {
+        showError('loginPasswordError', true);
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log("Logged in:", userCredential.user.email);
+          alert("Login successful! Redirecting...");
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          console.error(error.code, error.message);
+          if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            alert("Invalid email or password");
+          } else {
+            alert("Error: " + error.message);
+          }
+        });
+    });
+
+    // Signup with User Type
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirmPassword').value;
+      const userType = document.getElementById('userType').value;
+
+      // Reset errors
+      showError('signupNameError', false);
+      showError('signupEmailError', false);
+      showError('signupPasswordError', false);
+      showError('signupConfirmError', false);
+      showError('userTypeError', false);
+
+      let hasError = false;
+
+      if (!name) { showError('signupNameError', true); hasError = true; }
+      if (!email.includes('@')) { showError('signupEmailError', true); hasError = true; }
+      if (password.length < 6) { showError('signupPasswordError', true); hasError = true; }
+      if (password !== confirm) { showError('signupConfirmError', true); hasError = true; }
+      if (!userType) { showError('userTypeError', true); hasError = true; }
+
+      if (hasError) return;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("Account created for:", user.email);
+
+          // Save to Firestore
+          return db.collection("users").doc(user.uid).set({
+            fullName: name,
+            email: email,
+            userType: userType,              // "student" / "fresher" / "experienced"
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          console.log("User profile saved in Firestore");
+          alert("Account created successfully! Redirecting...");
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          console.error("Error:", error.code, error.message);
+          if (error.code === 'auth/email-already-in-use') {
+            alert("This email is already registered");
+          } else if (error.code === 'auth/invalid-email') {
+            alert("Invalid email format");
+          } else if (error.code === 'auth/weak-password') {
+            alert("Password is too weak (min 6 characters)");
+          } else {
+            alert("Error: " + error.message);
+          }
+        });
+    });
+  </script>
+
+</body>
+</html>

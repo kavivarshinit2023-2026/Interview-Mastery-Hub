@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login / Signup | Interview Mastery Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
+  <style>
+    /* உன் theme style முழுக்க copy paste பண்ணு – மாற்றமில்லை */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      --card-bg: rgba(30, 30, 60, 0.75);
+      --text-primary: #e0e0ff;
+      --text-secondary: #a0a0cc;
+      --accent: #a78bfa;
+      --accent-hover: #c084fc;
+      --border: rgba(100, 100, 255, 0.18);
+      --input-bg: rgba(40, 40, 80, 0.6);
+      --error: #ff6b6b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-attachment: fixed;
+    }
+
+    .auth-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .back-btn:hover { color: var(--accent); }
+
+    .back-btn i { margin-right: 0.5rem; }
+
+    .logo {
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .tab.hidden { display: none; }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .password-wrapper { position: relative; }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .toggle-password:hover { color: var(--accent); }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(167, 139, 250, 0.35);
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .admin-notice {
+      text-align: center;
+      color: #ff9f43;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      background: rgba(255, 159, 67, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 159, 67, 0.3);
+    }
+  </style>
+</head>
+<body class="dark-theme">
+
+  <div class="auth-container">
+    <a href="next-page.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Choose Path
+    </a>
+
+    <div class="logo">Admin Panel</div>
+    <p class="subtitle">Secure access for recruiters & administrators</p>
+
+    <div class="tabs" id="adminTabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="signup" id="signupTab">Create Admin</div>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <div class="form-group">
+        <label for="adminEmail">Email</label>
+        <input type="email" id="adminEmail" placeholder="admin@gmail.com" required>
+        <div class="error" id="loginEmailError">Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="adminPassword" placeholder="••••••••" required>
+          <i class="fas fa-eye toggle-password" id="toggleAdminLogin"></i>
+        </div>
+        <div class="error" id="loginPasswordError">Password is required</div>
+      </div>
+
+      <button type="submit" class="btn">Login to Admin Panel</button>
+    </form>
+
+    <form id="signupForm" class="auth-form" style="display: none;">
+      <!-- signup fields same as before -->
+      <div class="form-group">
+        <label for="adminName">Admin Name / Company</label>
+        <input type="text" id="adminName" placeholder="Interview Mastery Admin" required>
+        <div class="error" id="signupNameError">Name is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="adminEmailSignup">Email</label>
+        <input type="email" id="adminEmailSignup" placeholder="vkavi496@gmail.com" required>
+        <div class="error" id="signupEmailError">Please enter a valid email</div>
+      </div>
+
+      <div class="form-group">
+        <label for="adminPasswordSignup">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="adminPasswordSignup" placeholder="Create strong password" required>
+          <i class="fas fa-eye toggle-password" id="toggleAdminSignup"></i>
+        </div>
+        <div class="error" id="signupPasswordError">Password must be at least 6 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label for="adminConfirmPassword">Confirm Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="adminConfirmPassword" placeholder="Confirm password" required>
+          <i class="fas fa-eye toggle-password" id="toggleAdminConfirm"></i>
+        </div>
+        <div class="error" id="signupConfirmError">Passwords do not match</div>
+      </div>
+
+      <button type="submit" class="btn">Create Admin Account</button>
+
+      <div class="admin-notice">
+        <strong>Note:</strong> This is a one-time setup. After creation, only login will be available.
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAXwyhDKEzSToQH56JNJNWDJDnObl4Sq_0",
+      authDomain: "interviewmasteryhub-bf0e2.firebaseapp.com",
+      projectId: "interviewmasteryhub-bf0e2",
+      storageBucket: "interviewmasteryhub-bf0e2.firebasestorage.app",
+      messagingSenderId: "818885694064",
+      appId: "1:818885694064:web:3b390dac10ef3a7e785ab5",
+      measurementId: "G-GCT7XJRLVK"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const isAdminCreated = localStorage.getItem('adminAccountCreated') === 'true';
+
+    if (isAdminCreated) {
+      document.getElementById('signupTab').classList.add('hidden');
+      document.getElementById('loginForm').style.display = 'block';
+      document.querySelector('.tab[data-tab="login"]').classList.add('active');
+    }
+
+    const tabs = document.querySelectorAll('.tab:not(.hidden)');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        if (tab.dataset.tab === 'login') {
+          loginForm.style.display = 'block';
+          signupForm.style.display = 'none';
+        } else {
+          loginForm.style.display = 'none';
+          signupForm.style.display = 'block';
+        }
+      });
+    });
+
+    if (isAdminCreated) {
+      loginForm.style.display = 'block';
+      signupForm.style.display = 'none';
+    }
+
+    function setupPasswordToggle(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input && icon) {
+        icon.addEventListener('click', () => {
+          input.type = input.type === 'password' ? 'text' : 'password';
+          icon.classList.toggle('fa-eye');
+          icon.classList.toggle('fa-eye-slash');
+        });
+      }
+    }
+
+    setupPasswordToggle('adminPassword', 'toggleAdminLogin');
+    setupPasswordToggle('adminPasswordSignup', 'toggleAdminSignup');
+    setupPasswordToggle('adminConfirmPassword', 'toggleAdminConfirm');
+
+    function showError(id, show = true) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'block' : 'none';
+    }
+
+    // Admin Login – redirect to admin-dashboard.html
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+
+      showError('loginEmailError', false);
+      showError('loginPasswordError', false);
+
+      if (!email.includes('@')) {
+        showError('loginEmailError', true);
+        return;
+      }
+      if (!password) {
+        showError('loginPasswordError', true);
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log("Admin logged in:", userCredential.user.email);
+          alert("Admin login successful! Redirecting to dashboard...");
+          window.location.href = "admin-dashboard.html";
+        })
+        .catch((error) => {
+          let msg = "Login failed: ";
+          if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            msg += "Invalid credentials";
+          } else {
+            msg += error.message;
+          }
+          alert(msg);
+        });
+    });
+
+    // Admin Signup (one-time)
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('adminName').value.trim();
+      const email = document.getElementById('adminEmailSignup').value.trim();
+      const password = document.getElementById('adminPasswordSignup').value;
+      const confirm = document.getElementById('adminConfirmPassword').value;
+
+      let hasError = false;
+      showError('signupNameError', false);
+      showError('signupEmailError', false);
+      showError('signupPasswordError', false);
+      showError('signupConfirmError', false);
+
+      if (!name) { showError('signupNameError', true); hasError = true; }
+      if (!email.includes('@')) { showError('signupEmailError', true); hasError = true; }
+      if (password.length < 6) { showError('signupPasswordError', true); hasError = true; }
+      if (password !== confirm) { showError('signupConfirmError', true); hasError = true; }
+
+      if (hasError) return;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          localStorage.setItem('adminAccountCreated', 'true');
+          alert("Admin account created! Now only login is available.");
+          window.location.reload(); // reload to hide signup tab
+        })
+        .catch((error) => {
+          let msg = "Signup failed: ";
+          if (error.code === 'auth/email-already-in-use') msg += "Email already registered";
+          else if (error.code === 'auth/weak-password') msg += "Password too weak";
+          else msg += error.message;
+          alert(msg);
+        });
+    });
+  </script>
+</body>
+</html>

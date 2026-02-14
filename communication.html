@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Skills | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .content {
+            padding: 150px 8% 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            display: block;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .box {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 70px;
+            border: 1px solid rgba(129,140,248,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin-bottom: 80px;
+        }
+
+        .why {
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 60px;
+        }
+
+        .tips h2, .questions h2 {
+            font-size: 2rem;
+            color: #818cf8;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tips ul, .questions ul {
+            padding-left: 50px;
+            font-size: 1.4rem;
+            line-height: 2;
+            color: #cbd5e1;
+        }
+
+        .tips li, .questions li {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tip-img {
+            width: 280px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .practice-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.3rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Choice Section */
+        .choice-section {
+            margin-top: 100px;
+        }
+        .choice-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #c084fc;
+        }
+        .choices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .choice-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(129,140,248,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .choice-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(129,140,248,0.4);
+        }
+        .choice-img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .choice-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #818cf8;
+        }
+        .choice-card p {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="soft-skills.html" class="back-link">← Back to Soft Skills</a>
+
+    <div class="content">
+        <h1>Communication Skills</h1>
+
+        <img src="https://static.vecteezy.com/system/resources/previews/052/921/630/non_2x/concept-of-communication-skills-effective-communication-and-respect-in-different-situations-expressing-opinions-effectively-in-teamwork-design-illustration-vector.jpg" alt="Communication Skills Illustration" class="hero-img">
+
+        <div class="box">
+            <div class="why">
+                Why it matters in interviews: Clear communication shows confidence and helps interviewers understand your thoughts effectively.
+            </div>
+
+            <div class="tips">
+                <h2>Tips</h2>
+                <ul>
+                    <li>
+                        <img src="https://cdn.uconnectlabs.com/wp-content/uploads/sites/123/2022/06/1-1.png?v=75708" alt="STAR Method" class="tip-img">
+                        Use the STAR method (Situation, Task, Action, Result) to structure answers.
+                    </li>
+                    <li>
+                        <img src="https://jobgrin.co.in/blog/wp-content/uploads/2021/07/Eye-Contact-With-The-Interviewer-min.jpg" alt="Body Language" class="tip-img">
+                        Speak slowly and clearly — avoid filler words. Maintain eye contact and positive body language.
+                    </li>
+                    <li>
+                        <img src="https://www.thebalancemoney.com/thmb/agNtQCglUcmMRaWZP-gcQecz87g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/active-listening-skills-with-examples-2059684-ct-edit-b374ca3a973b466283314e6ee3ae7b1a.jpg" alt="Active Listening" class="tip-img">
+                        Listen carefully and ask clarifying questions if needed.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="questions">
+                <h2>Common Questions</h2>
+                <ul>
+                    <li>Tell me about yourself.</li>
+                    <li>Why do you want this role?</li>
+                    <li>Describe a challenging situation and how you handled it.</li>
+                    <li>What are your strengths and weaknesses?</li>
+                    <li>Where do you see yourself in 5 years?</li>
+                </ul>
+                <p class="practice-note">Practice these regularly to improve!</p>
+            </div>
+        </div>
+
+        <!-- User Choice Section - UPDATED -->
+        <div class="choice-section">
+            <h2>How do you want to learn?</h2>
+            <div class="choices">
+                <div class="choice-card" onclick="location.href='mcq-communication.html'">
+                    <img src="https://x0pa.com/wp-content/uploads/2025/05/Screenshot-2025-05-07-at-1.42.27%E2%80%AFPM.png" alt="MCQ Quiz" class="choice-img">
+                    <h3>Take MCQ Quiz</h3>
+                    <p>Test your knowledge with 20+ multiple choice questions</p>
+                </div>
+
+                <div class="choice-card" onclick="location.href='videos-communication.html'">
+                    <img src="https://img.youtube.com/vi/HG68Ymazo18/maxresdefault.jpg" alt="Watch Videos" class="choice-img">
+                    <h3>Watch Videos</h3>
+                    <p>Learn from 12 beginner-friendly expert tutorials</p>
+                </div>
+
+                <div class="choice-card" onclick="location.href='mock-communication.html'">
+                    <img src="https://skillen.in/wp-content/uploads/2025/06/job-interview-illustration-free-vector-Photoroom-e1751108603500.png" alt="Mock Interview" class="choice-img">
+                    <h3>Practice Mock Interview</h3>
+                    <p>Simulate real interview scenarios with feedback</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+</body>
+</html>    

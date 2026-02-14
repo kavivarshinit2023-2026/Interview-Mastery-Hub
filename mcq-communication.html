@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication MCQ Quiz | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .quiz-container {
+            padding: 150px 8% 100px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .quiz-header {
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(129,140,248,0.2);
+        }
+        .quiz-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        .progress {
+            height: 100%;
+            width: 4%;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            transition: width 0.4s;
+        }
+        .question-counter {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .question-box {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            border: 1px solid rgba(129,140,248,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: none;
+        }
+        .question-box.active {
+            display: block;
+        }
+        .question-text {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .options {
+            display: grid;
+            gap: 20px;
+        }
+        .option {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background: rgba(129,140,248,0.2);
+            border-color: #818cf8;
+            transform: translateX(10px);
+        }
+        .option.selected {
+            background: rgba(129,140,248,0.4);
+            border-color: #818cf8;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .nav-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(129,140,248,0.4);
+        }
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 80px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            margin-top: 50px;
+        }
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#818cf8 0deg, #818cf8 0deg, rgba(255,255,255,0.1) 0deg);
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #818cf8;
+        }
+        .result-message {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="communication.html" class="back-link">← Back to Communication</a>
+
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Communication Skills Quiz</h1>
+            <p class="quiz-info">25 real-world questions • One at a time</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-counter">Question <span id="current">1</span> of 25</div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-box active">
+            <div class="question-text">What does the 'S' in STAR method stand for?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Strategy</div>
+                <div class="option" onclick="selectOption(this)">Situation</div>
+                <div class="option" onclick="selectOption(this)">Skill</div>
+                <div class="option" onclick="selectOption(this)">Summary</div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-box">
+            <div class="question-text">Which filler word should you avoid in interviews?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Please</div>
+                <div class="option" onclick="selectOption(this)">Thank you</div>
+                <div class="option" onclick="selectOption(this)">Um</div>
+                <div class="option" onclick="selectOption(this)">Yes</div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-box">
+            <div class="question-text">What is the most important aspect of active listening?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Taking notes</div>
+                <div class="option" onclick="selectOption(this)">Maintaining eye contact</div>
+                <div class="option" onclick="selectOption(this)">Interrupting to clarify</div>
+                <div class="option" onclick="selectOption(this)">Fully concentrating on the speaker</div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-box">
+            <div class="question-text">How should you start your answer to "Tell me about yourself"?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">With your childhood story</div>
+                <div class="option" onclick="selectOption(this)">With your current role and achievements</div>
+                <div class="option" onclick="selectOption(this)">With your hobbies</div>
+                <div class="option" onclick="selectOption(this)">With your education only</div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-box">
+            <div class="question-text">What does good body language include during an interview?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Crossing arms</div>
+                <div class="option" onclick="selectOption(this)">Slouching</div>
+                <div class="option" onclick="selectOption(this)">Leaning slightly forward</div>
+                <div class="option" onclick="selectOption(this)">Looking at your phone</div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-box">
+            <div class="question-text">Why is it important to speak slowly in interviews?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">To fill time</div>
+                <div class="option" onclick="selectOption(this)">To show confidence and clarity</div>
+                <div class="option" onclick="selectOption(this)">To confuse the interviewer</div>
+                <div class="option" onclick="selectOption(this)">To appear nervous</div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-box">
+            <div class="question-text">What should you do if you don't understand a question?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Guess the answer</div>
+                <div class="option" onclick="selectOption(this)">Ask for clarification</div>
+                <div class="option" onclick="selectOption(this)">Change the topic</div>
+                <div class="option" onclick="selectOption(this)">Stay silent</div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-box">
+            <div class="question-text">What is a sign of positive body language?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Fidgeting</div>
+                <div class="option" onclick="selectOption(this)">Open palms</div>
+                <div class="option" onclick="selectOption(this)">Avoiding eye contact</div>
+                <div class="option" onclick="selectOption(this)">Crossed legs</div>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-box">
+            <div class="question-text">How long should your "Tell me about yourself" answer be?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">5 minutes</div>
+                <div class="option" onclick="selectOption(this)">1-2 minutes</div>
+                <div class="option" onclick="selectOption(this)">30 seconds</div>
+                <div class="option" onclick="selectOption(this)">10 minutes</div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-box">
+            <div class="question-text">What is the 'R' in STAR method?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Review</div>
+                <div class="option" onclick="selectOption(this)">Result</div>
+                <div class="option" onclick="selectOption(this)">Reason</div>
+                <div class="option" onclick="selectOption(this)">Response</div>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-box">
+            <div class="question-text">What should you avoid doing with your hands?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Gesturing naturally</div>
+                <div class="option" onclick="selectOption(this)">Fidgeting</div>
+                <div class="option" onclick="selectOption(this)">Using open palms</div>
+                <div class="option" onclick="selectOption(this)">Keeping them still</div>
+            </div>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question-box">
+            <div class="question-text">What does good eye contact show?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Nervousness</div>
+                <div class="option" onclick="selectOption(this)">Confidence and interest</div>
+                <div class="option" onclick="selectOption(this)">Disinterest</div>
+                <div class="option" onclick="selectOption(this)">Arrogance</div>
+            </div>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question-box">
+            <div class="question-text">How can you show active listening?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Looking away</div>
+                <div class="option" onclick="selectOption(this)">Nodding and paraphrasing</div>
+                <div class="option" onclick="selectOption(this)">Interrupting</div>
+                <div class="option" onclick="selectOption(this)">Checking your phone</div>
+            </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-box">
+            <div class="question-text">What is the best way to end an interview answer?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">With a question</div>
+                <div class="option" onclick="selectOption(this)">With a positive outcome</div>
+                <div class="option" onclick="selectOption(this)">Abruptly</div>
+                <div class="option" onclick="selectOption(this)">With an apology</div>
+            </div>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question-box">
+            <div class="question-text">What tone of voice is best in interviews?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Monotone</div>
+                <div class="option" onclick="selectOption(this)">Clear and enthusiastic</div>
+                <div class="option" onclick="selectOption(this)">Very loud</div>
+                <div class="option" onclick="selectOption(this)">Very soft</div>
+            </div>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="question-box">
+            <div class="question-text">What is the purpose of the STAR method?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">To confuse the interviewer</div>
+                <div class="option" onclick="selectOption(this)">To structure behavioral answers</div>
+                <div class="option" onclick="selectOption(this)">To talk about hobbies</div>
+                <div class="option" onclick="selectOption(this)">To list skills</div>
+            </div>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="question-box">
+            <div class="question-text">What should you do before answering a question?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Rush to answer</div>
+                <div class="option" onclick="selectOption(this)">Pause briefly to think</div>
+                <div class="option" onclick="selectOption(this)">Repeat the question incorrectly</div>
+                <div class="option" onclick="selectOption(this)">Look away</div>
+            </div>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="question-box">
+            <div class="question-text">Which is a common communication mistake?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Using examples</div>
+                <div class="option" onclick="selectOption(this)">Using too many filler words</div>
+                <div class="option" onclick="selectOption(this)">Speaking clearly</div>
+                <div class="option" onclick="selectOption(this)">Making eye contact</div>
+            </div>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="question-box">
+            <div class="question-text">What should you ask at the end of an interview?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">About salary immediately</div>
+                <div class="option" onclick="selectOption(this)">Questions showing interest in the role</div>
+                <div class="option" onclick="selectOption(this)">Nothing</div>
+                <div class="option" onclick="selectOption(this)">Personal questions</div>
+            </div>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="question-box">
+            <div class="question-text">What is the best closing statement in an interview?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">"I'm desperate for this job"</div>
+                <div class="option" onclick="selectOption(this)">"Thank you, I'm excited about the opportunity"</div>
+                <div class="option" onclick="selectOption(this)">"When will I hear back?" only</div>
+                <div class="option" onclick="selectOption(this)">No closing statement</div>
+            </div>
+        </div>
+
+        <!-- Question 21 -->
+        <div class="question-box">
+            <div class="question-text">What does 'A' in STAR stand for?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Answer</div>
+                <div class="option" onclick="selectOption(this)">Action</div>
+                <div class="option" onclick="selectOption(this)">Achievement</div>
+                <div class="option" onclick="selectOption(this)">Analysis</div>
+            </div>
+        </div>
+
+        <!-- Question 22 -->
+        <div class="question-box">
+            <div class="question-text">How should you sit in an interview?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Slouched back</div>
+                <div class="option" onclick="selectOption(this)">Upright with good posture</div>
+                <div class="option" onclick="selectOption(this)">Leaning far back</div>
+                <div class="option" onclick="selectOption(this)">Legs widely spread</div>
+            </div>
+        </div>
+
+        <!-- Question 23 -->
+        <div class="question-box">
+            <div class="question-text">What is the goal of communication in interviews?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">To talk as much as possible</div>
+                <div class="option" onclick="selectOption(this)">To build rapport and convey competence</div>
+                <div class="option" onclick="selectOption(this)">To argue</div>
+                <div class="option" onclick="selectOption(this)">To show off</div>
+            </div>
+        </div>
+
+        <!-- Question 24 -->
+        <div class="question-box">
+            <div class="question-text">Which is recommended for voice modulation?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Monotone voice</div>
+                <div class="option" onclick="selectOption(this)">Varying pitch and pace</div>
+                <div class="option" onclick="selectOption(this)">Speaking very fast</div>
+                <div class="option" onclick="selectOption(this)">Whispering</div>
+            </div>
+        </div>
+
+        <!-- Question 25 -->
+        <div class="question-box">
+            <div class="question-text">What should you do after the interview?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Nothing</div>
+                <div class="option" onclick="selectOption(this)">Send a thank you email</div>
+                <div class="option" onclick="selectOption(this)">Call daily</div>
+                <div class="option" onclick="selectOption(this)">Post on social media</div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+            <button class="nav-btn" id="submitBtn" onclick="showResults()" style="display:none;">Submit Quiz</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="score-circle" id="scoreCircle">0%</div>
+            <div class="result-message" id="resultMsg"></div>
+            <button class="nav-btn" onclick="location.reload()">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        const totalQuestions = 25;
+        let currentQuestion = 1;
+        let answers = new Array(totalQuestions).fill(null);
+
+        // Correct answers index (0-based, correct option position in each question)
+        const correctAnswers = [
+            1, // Q1: Situation
+            2, // Q2: Um
+            3, // Q3: Fully concentrating
+            1, // Q4: Current role
+            2, // Q5: Leaning slightly forward
+            1, // Q6: Confidence and clarity
+            1, // Q7: Ask for clarification
+            1, // Q8: Open palms
+            1, // Q9: 1-2 minutes
+            1, // Q10: Result
+            1, // Q11: Fidgeting
+            1, // Q12: Confidence and interest
+            1, // Q13: Nodding and paraphrasing
+            1, // Q14: Positive outcome
+            1, // Q15: Clear and enthusiastic
+            1, // Q16: Structure behavioral answers
+            1, // Q17: Pause briefly
+            1, // Q18: Too many filler words
+            1, // Q19: Questions showing interest
+            1, // Q20: Thank you, excited
+            1, // Q21: Action
+            1, // Q22: Upright posture
+            1, // Q23: Build rapport
+            1, // Q24: Varying pitch
+            1  // Q25: Thank you email
+        ];
+
+        function selectOption(el) {
+            const options = el.parentNode.children;
+            for (let opt of options) opt.classList.remove('selected');
+            el.classList.add('selected');
+            answers[currentQuestion - 1] = Array.from(options).indexOf(el);
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('current').textContent = currentQuestion;
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').style.display = currentQuestion === totalQuestions ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = currentQuestion === totalQuestions ? 'inline-block' : 'none';
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion - 1] === null) {
+                alert('Please select an answer!');
+                return;
+            }
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion++;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function prevQuestion() {
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion--;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function showResults() {
+            let score = 0;
+            answers.forEach((ans, i) => {
+                if (ans === correctAnswers[i]) score++;
+            });
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('scoreCircle').textContent = percentage + '%';
+            document.getElementById('scoreCircle').style.background = `conic-gradient(#818cf8 ${percentage * 3.6}deg, rgba(255,255,255,0.1) 0deg)`;
+            document.getElementById('resultMsg').textContent = percentage >= 80 ? 'Excellent! Interview Ready!' :
+                                                             percentage >= 60 ? 'Good! Keep Practicing' : 'Keep Learning!';
+            document.querySelector('.navigation').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

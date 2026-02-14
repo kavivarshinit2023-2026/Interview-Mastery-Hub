@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Intelligence MCQ Quiz | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .quiz-container {
+            padding: 150px 8% 100px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .quiz-header {
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(129,140,248,0.2);
+        }
+        .quiz-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        .progress {
+            height: 100%;
+            width: 10%;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            transition: width 0.4s;
+        }
+        .question-counter {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .question-box {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            border: 1px solid rgba(129,140,248,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: none;
+        }
+        .question-box.active {
+            display: block;
+        }
+        .question-text {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .options {
+            display: grid;
+            gap: 20px;
+        }
+        .option {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background: rgba(129,140,248,0.2);
+            border-color: #818cf8;
+            transform: translateX(10px);
+        }
+        .option.selected {
+            background: rgba(129,140,248,0.4);
+            border-color: #818cf8;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .nav-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(129,140,248,0.4);
+        }
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 80px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            margin-top: 50px;
+        }
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#818cf8 0deg, #818cf8 0deg, rgba(255,255,255,0.1) 0deg);
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #818cf8;
+        }
+        .result-message {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="Emotional Intelligence.html" class="back-link">← Back to Emotional Intelligence</a>
+
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Emotional Intelligence Quiz</h1>
+            <p class="quiz-info">10 important interview-focused questions • One at a time</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-counter">Question <span id="current">1</span> of 10</div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-box active">
+            <div class="question-text">Which of the following is NOT one of the five main components of Emotional Intelligence according to Daniel Goleman?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Self-awareness</div>
+                <div class="option" onclick="selectOption(this)">Technical expertise</div>
+                <div class="option" onclick="selectOption(this)">Empathy</div>
+                <div class="option" onclick="selectOption(this)">Social skills</div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-box">
+            <div class="question-text">When a colleague is upset about a project delay, the most emotionally intelligent response is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">“Just get over it, it's not a big deal”</div>
+                <div class="option" onclick="selectOption(this)">“I can see this is really frustrating for you. Let's talk about it.”</div>
+                <div class="option" onclick="selectOption(this)">Change the subject quickly</div>
+                <div class="option" onclick="selectOption(this)">Tell them others are also affected</div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-box">
+            <div class="question-text">What is the best first step when you feel very angry during a work discussion?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Immediately express your anger loudly</div>
+                <div class="option" onclick="selectOption(this)">Take a brief pause to calm down</div>
+                <div class="option" onclick="selectOption(this)">Ignore the other person</div>
+                <div class="option" onclick="selectOption(this)">Walk out of the meeting</div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-box">
+            <div class="question-text">Which is the healthiest way to handle receiving harsh criticism from your manager?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Defend yourself immediately</div>
+                <div class="option" onclick="selectOption(this)">Listen carefully, ask clarifying questions, then reflect</div>
+                <div class="option" onclick="selectOption(this)">Ignore the feedback completely</div>
+                <div class="option" onclick="selectOption(this)">Get upset and complain to colleagues</div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-box">
+            <div class="question-text">Self-awareness in Emotional Intelligence primarily involves:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Knowing exactly what others think of you</div>
+                <div class="option" onclick="selectOption(this)">Recognizing your own emotions and their impact on others</div>
+                <div class="option" onclick="selectOption(this)">Always staying positive no matter what</div>
+                <div class="option" onclick="selectOption(this)">Hiding your true feelings</div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-box">
+            <div class="question-text">What does good self-regulation in EI help you do?</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">React impulsively to situations</div>
+                <div class="option" onclick="selectOption(this)">Stay calm and manage emotions under pressure</div>
+                <div class="option" onclick="selectOption(this)">Avoid all conflicts</div>
+                <div class="option" onclick="selectOption(this)">Ignore your feelings completely</div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-box">
+            <div class="question-text">Empathy in the workplace means:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Feeling sorry for others</div>
+                <div class="option" onclick="selectOption(this)">Understanding and sharing the feelings of others</div>
+                <div class="option" onclick="selectOption(this)">Agreeing with everyone</div>
+                <div class="option" onclick="selectOption(this)">Ignoring others' emotions</div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-box">
+            <div class="question-text">Motivation in EI is most closely related to:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Working only for money</div>
+                <div class="option" onclick="selectOption(this)">Pursuing goals with energy and persistence</div>
+                <div class="option" onclick="selectOption(this)">Avoiding all challenges</div>
+                <div class="option" onclick="selectOption(this)">Competing with colleagues</div>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-box">
+            <div class="question-text">After a heated team disagreement, the most emotionally intelligent action is:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Avoid the person for a week</div>
+                <div class="option" onclick="selectOption(this)">Initiate a calm follow-up conversation to resolve it</div>
+                <div class="option" onclick="selectOption(this)">Tell everyone else how wrong the other person was</div>
+                <div class="option" onclick="selectOption(this)">Pretend it never happened</div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-box">
+            <div class="question-text">Social skills in EI help you primarily with:</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(this)">Working alone without interaction</div>
+                <div class="option" onclick="selectOption(this)">Building relationships, managing conflicts, and leading teams</div>
+                <div class="option" onclick="selectOption(this)">Avoiding all meetings</div>
+                <div class="option" onclick="selectOption(this)">Focusing only on tasks</div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+            <button class="nav-btn" id="submitBtn" onclick="showResults()" style="display:none;">Submit Quiz</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="score-circle" id="scoreCircle">0%</div>
+            <div class="result-message" id="resultMsg"></div>
+            <button class="nav-btn" onclick="location.reload()">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        const totalQuestions = 10;
+        let currentQuestion = 1;
+        let answers = new Array(totalQuestions).fill(null);
+
+        // Correct answers (0-based index)
+        const correctAnswers = [
+            1,  // Q1: Technical expertise (NOT a component)
+            1,  // Q2: Empathetic response
+            1,  // Q3: Pause to calm down
+            1,  // Q4: Listen and reflect
+            1,  // Q5: Recognize own emotions
+            1,  // Q6: Stay calm under pressure
+            1,  // Q7: Understanding others' feelings
+            1,  // Q8: Pursuing goals with energy
+            1,  // Q9: Calm follow-up conversation
+            1   // Q10: Building relationships & leading
+        ];
+
+        function selectOption(el) {
+            const options = el.parentNode.children;
+            for (let opt of options) opt.classList.remove('selected');
+            el.classList.add('selected');
+            answers[currentQuestion - 1] = Array.from(options).indexOf(el);
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('current').textContent = currentQuestion;
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').style.display = currentQuestion === totalQuestions ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = currentQuestion === totalQuestions ? 'inline-block' : 'none';
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion - 1] === null) {
+                alert('Bro, please select an answer first!');
+                return;
+            }
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion++;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function prevQuestion() {
+            document.querySelector('.question-box.active').classList.remove('active');
+            currentQuestion--;
+            document.querySelectorAll('.question-box')[currentQuestion - 1].classList.add('active');
+            updateProgress();
+        }
+
+        function showResults() {
+            let score = 0;
+            answers.forEach((ans, i) => {
+                if (ans === correctAnswers[i]) score++;
+            });
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('scoreCircle').textContent = percentage + '%';
+            document.getElementById('scoreCircle').style.background = `conic-gradient(#818cf8 ${percentage * 3.6}deg, rgba(255,255,255,0.1) 0deg)`;
+
+            document.getElementById('resultMsg').textContent = 
+                percentage >= 90 ? 'Outstanding EI Master 🔥' :
+                percentage >= 70 ? 'Excellent! Very strong emotional intelligence 💙' :
+                percentage >= 50 ? 'Solid effort! Keep building your EQ skills' :
+                'Good start! Emotional Intelligence grows with practice 💪';
+
+            document.querySelector('.navigation').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

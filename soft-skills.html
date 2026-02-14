@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soft Skills | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+        nav a:hover, nav a.active { color: #818cf8; }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            transition: 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        .hero {
+            padding: 180px 8% 100px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5.5rem;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.6rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            line-height: 1.7;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 0 8%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .skill-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 35px;
+            padding: 50px 40px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            transition: all 0.5s ease;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .skill-card:hover {
+            transform: translateY(-30px);
+            box-shadow: 0 50px 100px rgba(129, 140, 248, 0.5);
+            background: rgba(129,140,248,0.15);
+            border-color: #818cf8;
+        }
+        .skill-card:active {
+            transform: translateY(-20px);
+        }
+        .skill-card .icon {
+            font-size: 90px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .skill-card h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: #e2e8f0;
+        }
+        .skill-card p {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html" class="active">Soft Skills</a></li>
+                <li><a href="resume-builder.html">Resume Builder</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Develop<br>Essential<br>Soft Skills</h1>
+        <p>Click on any skill card to dive deep — practice with 20+ real interview MCQs, daily exercises, and top YouTube recommendations.</p>
+    </section>
+
+    <div class="skills-grid">
+        <div class="skill-card" onclick="location.href='communication.html'">
+            <div class="icon"><i class="fas fa-comments"></i></div>
+            <h3>Communication</h3>
+            <p>Express ideas clearly, listen actively, and adapt your style to any audience.</p>
+        </div>
+        <div class="skill-card" onclick="location.href='teamwork.html'">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <h3>Teamwork</h3>
+            <p>Collaborate effectively, share credit, and resolve conflicts constructively.</p>
+        </div>
+        <div class="skill-card" onclick="location.href='Emotional Intelligence.html'">
+            <div class="icon"><i class="fas fa-brain"></i></div>
+            <h3>Emotional Intelligence</h3>
+            <p>Understand and manage your emotions while reading others' cues.</p>
+        </div>
+        <div class="skill-card" onclick="location.href='Problem Solving.html'">
+            <div class="icon"><i class="fas fa-lightbulb"></i></div>
+            <h3>Problem Solving</h3>
+            <p>Think critically and find creative solutions under pressure.</p>
+        </div>
+        <div class="skill-card" onclick="location.href='leadership.html'">
+            <div class="icon"><i class="fas fa-crown"></i></div>
+            <h3>Leadership</h3>
+            <p>Influence and guide others, even without formal authority.</p>
+        </div>
+        <div class="skill-card" onclick="location.href='time-management.html'">
+            <div class="icon"><i class="fas fa-clock"></i></div>
+            <h3>Time Management</h3>
+            <p>Prioritize tasks and maintain focus in high-pressure situations.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        function logout() {
+            // Add your logout logic here (e.g., clear localStorage, redirect to login)
+            alert("Logged out successfully!");
+            // window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+</html>

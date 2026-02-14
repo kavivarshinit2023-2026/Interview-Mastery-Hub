@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | Interview Mastery Hub</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(-45deg, #0f0c29, #1a0f4d, #302b63, #24243e);
+      --card-bg: rgba(20, 20, 50, 0.55);
+      --glass-border: rgba(120, 100, 255, 0.28);
+      --accent: #b967ff;
+      --cyan: #67e8f9;
+      --text-primary: #f0f0ff;
+      --text-secondary: #b0b0e0;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-gradient);
+      background-size: 400% 400%;
+      animation: gradientFlow 18s ease infinite;
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      background: rgba(15, 15, 45, 0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1.4rem 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 2.1rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .user-info { display: flex; align-items: center; gap: 1.3rem; }
+
+    .user-name {
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-logout, .back-btn {
+      padding: 0.7rem 1.5rem;
+      background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s;
+      font-weight: 500;
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+    }
+
+    .btn-logout:hover, .back-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(255,107,107,0.5);
+    }
+
+    main { padding: 4rem 6%; max-width: 1300px; margin: 0 auto; }
+
+    .welcome-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 32px;
+      border: 1px solid var(--glass-border);
+      padding: 3.5rem 2.8rem;
+      text-align: center;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+    }
+
+    .welcome-title {
+      font-size: 3.3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-subtitle { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+
+    .start-btn {
+      padding: 1.2rem 3rem;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.4s;
+      box-shadow: 0 12px 40px rgba(185,103,255,0.4);
+      margin: 1.5rem auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .start-btn:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(185,103,255,0.6); }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      padding: 2.2rem 1.8rem;
+      transition: all 0.5s;
+    }
+
+    .feature-card:hover { transform: translateY(-12px); box-shadow: 0 30px 80px rgba(167,139,250,0.25); }
+
+    .feature-icon { font-size: 3.5rem; margin-bottom: 1.3rem; color: var(--accent); }
+
+    .feature-title { font-size: 1.5rem; margin-bottom: 0.8rem; }
+
+    .feature-desc { color: var(--text-secondary); font-size: 1.05rem; }
+
+    .challenge-section { margin-top: 4.5rem; }
+
+    .challenge-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .progress-container {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 2rem auto;
+    }
+
+    .progress-ring { transform: rotate(-90deg); }
+
+    .progress-ring__circle { transition: stroke-dashoffset 0.5s ease; transform-origin: 50% 50%; }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3.8rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .streak {
+      font-size: 1.5rem;
+      color: #ffdd57;
+      margin: 1.2rem 0;
+      font-weight: bold;
+    }
+
+    .task-list {
+      margin-top: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .task-item {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .task-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .task-header:hover {
+      background: rgba(167,139,250,0.1);
+    }
+
+    .task-day {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .task-status {
+      font-size: 1rem;
+      color: var(--cyan);
+    }
+
+    .task-content {
+      padding: 1.5rem;
+      display: none;
+      background: rgba(20,20,50,0.3);
+    }
+
+    .task-content.show {
+      display: block;
+    }
+
+    .task-desc {
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .notes-input {
+      width: 100%;
+      min-height: 100px;
+      padding: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    .submit-notes {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      color: white;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+
+    .submit-notes:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .completed-note {
+      background: rgba(103,232,249,0.12);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      border-left: 4px solid var(--cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Interview Mastery Hub</div>
+    <div class="user-info" id="userInfo" style="display: none;">
+      <span class="user-name">Welcome, <span id="displayName">User</span>!</span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Back button to Soft Skills page -->
+    <div style="text-align: left; margin-bottom: 2rem;">
+      <button class="back-btn" onclick="window.location.href='soft-skills.html'">
+        <i class="fas fa-arrow-left"></i> Back to Soft Skills
+      </button>
+    </div>
+
+    <div class="welcome-card">
+      <h1 class="welcome-title">Master Your Interviews</h1>
+      <p class="welcome-subtitle">AI-powered preparation • Real skill development • Track your growth day by day</p>
+
+      <button class="start-btn" id="startLearningBtn">
+        <i class="fas fa-rocket"></i> Start Learning
+      </button>
+
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-brain"></i></div>
+          <h3 class="feature-title">Adaptive Questions</h3>
+          <p class="feature-desc">AI tailors questions to your role & experience level.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3 class="feature-title">Real Progress Tracking</h3>
+          <p class="feature-desc">Daily soft skills tasks with reflections & streak tracking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-video"></i></div>
+          <h3 class="feature-title">Mock Interviews</h3>
+          <p class="feature-desc">Record answers → get AI feedback & improve daily.</p>
+        </div>
+      </div>
+
+      <div class="challenge-section">
+        <h2 class="challenge-title">30-Day Soft Skills Mastery Challenge</h2>
+        <p style="color:var(--text-secondary); margin-bottom:2.2rem; font-size:1.15rem;">
+          Build essential interview soft skills day by day. Complete today's task, write a short reflection — progress unlocks automatically!
+        </p>
+
+        <div class="progress-container">
+          <svg class="progress-ring" width="240" height="240">
+            <circle class="progress-ring__circle" stroke="rgba(167,139,250,0.18)" stroke-width="16" fill="transparent" r="110" cx="120" cy="120"/>
+            <circle id="progressCircle" class="progress-ring__circle" stroke="url(#grad)" stroke-width="16" fill="transparent" r="110" cx="120" cy="120" stroke-dasharray="691" stroke-dashoffset="691"/>
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent)" />
+                <stop offset="100%" stop-color="var(--cyan)" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="progress-text" id="progressPercent">0%</div>
+        </div>
+
+        <p class="streak" id="streakDisplay">🔥 0-day streak</p>
+
+        <div class="task-list" id="taskList"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAXwyhDKEzSToQH56JNJNWDJDnObl4Sq_0",
+      authDomain: "interviewmasteryhub-bf0e2.firebaseapp.com",
+      projectId: "interviewmasteryhub-bf0e2",
+      storageBucket: "interviewmasteryhub-bf0e2.firebasestorage.app",
+      messagingSenderId: "818885694064",
+      appId: "1:818885694064:web:3b390dac10ef3a7e785ab5",
+      measurementId: "G-GCT7XJRLVK"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentDay = 0;
+    let streak = 0;
+    let lastCheckInDateStr = null;
+    let userNotes = {};
+
+    const TOTAL_DAYS = 30;
+    const CIRCUMFERENCE = 2 * Math.PI * 110;
+
+    const DAILY_SOFT_SKILLS_TASKS = [
+      null,
+      "Day 1: Self-Assessment – List your top 5 strengths and 3 areas to improve for interviews.",
+      "Day 2: Build Confidence – Practice power poses for 2 minutes and note how you feel.",
+      "Day 3: Perfect 'Tell Me About Yourself' – Write and record a 60-second version.",
+      "Day 4: Master STAR Method – Prepare 2 stories (Situation, Task, Action, Result).",
+      "Day 5: Body Language Basics – Record yourself answering a question and check posture & eye contact.",
+      "Day 6: Active Listening Practice – Watch a TED talk and summarize key points in your own words.",
+      "Day 7: Weekly Reflection – Review your week: What soft skill improved most?",
+      "Day 8: Clear Communication – Explain a complex idea (e.g., your favorite project) in simple terms.",
+      "Day 9: Positive Mindset – Write 3 things you're grateful for related to your career journey.",
+      "Day 10: Mock Behavioral Interview – Answer 'Why should we hire you?' and record it.",
+      "Day 11: Storytelling Skill – Turn one of your STAR stories into an engaging 90-second narrative.",
+      "Day 12: Teamwork Examples – Prepare an example of successful collaboration.",
+      "Day 13: Handle Conflict – Think of a past disagreement and how you resolved it positively.",
+      "Day 14: Mid-Challenge Check – Review notes from Days 1–13. What progress do you see?",
+      "Day 15: Adaptability – Describe a time you adapted to change at work/school.",
+      "Day 16: Problem-Solving Practice – Solve a common interview puzzle and explain your thinking.",
+      "Day 17: Emotional Intelligence – Reflect on a time you managed stress in a tough situation.",
+      "Day 18: Timed Mock – Do a full 10-minute mock interview (record & review).",
+      "Day 19: Leadership Example – Prepare a story showing initiative or leading others.",
+      "Day 20: Revisit Weak Area – Go back to Day 1 list and practice one weak skill.",
+      "Day 21: Feedback Simulation – Ask a friend/family to give feedback on a recorded answer.",
+      "Day 22: Advanced Questions – Prepare answers for 'Biggest weakness' and 'Where do you see yourself in 5 years?'.",
+      "Day 23: Full Dress Rehearsal – Simulate a complete interview (dress up, time yourself).",
+      "Day 24: Networking Practice – Write a LinkedIn message template to connect with someone in your field.",
+      "Day 25: Persuasion Skill – Practice selling your skills in 30 seconds (elevator pitch).",
+      "Day 26: Confidence Booster – List 10 wins/accomplishments from your life/career.",
+      "Day 27: Self-Review Video – Record a full answer and critique tone, pace, filler words.",
+      "Day 28: Apply Soft Skills – Update your resume/LinkedIn with new soft skill examples.",
+      "Day 29: Final Polish – Re-record your weakest answer from earlier days.",
+      "Day 30: Celebration & Next Steps – Review full progress, plan how to use these skills in real interviews!"
+    ];
+
+    function capitalizeName(str) {
+      if (!str) return 'User';
+      return str
+        .split(/[@._]/)[0]
+        .replace(/[^a-zA-Z]/g, ' ')
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    function updateUI() {
+      const percent = Math.round((currentDay / TOTAL_DAYS) * 100);
+      document.getElementById('progressPercent').textContent = percent + '%';
+      document.getElementById('progressCircle').setAttribute('stroke-dashoffset', CIRCUMFERENCE * (1 - percent/100));
+      document.getElementById('streakDisplay').textContent = `🔥 ${streak}-day streak!`;
+
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      const today = new Date().toDateString();
+      const alreadyDoneToday = lastCheckInDateStr === today;
+
+      for (let i = 1; i <= TOTAL_DAYS; i++) {
+        const isCompleted = i <= currentDay;
+        const isCurrentDay = i === currentDay + 1;
+
+        const item = document.createElement('div');
+        item.className = 'task-item';
+        let contentHTML = `
+          <div class="task-header">
+            <span class="task-day">Day ${i}</span>
+            <span class="task-status">${isCompleted ? '<i class="fas fa-check-circle" style="color:#67e8f9;"></i> Completed' : (isCurrentDay ? 'Today\'s Task' : 'Locked')}</span>
+          </div>
+          <div class="task-content">
+            <p class="task-desc">${DAILY_SOFT_SKILLS_TASKS[i]}</p>
+        `;
+
+        if (isCompleted) {
+          contentHTML += userNotes[i] 
+            ? `<div class="completed-note"><strong>Your reflection:</strong><br>${userNotes[i]}</div>`
+            : '<p style="color:var(--text-secondary);">No reflection added</p>';
+        } else if (isCurrentDay) {
+          contentHTML += `
+            <textarea class="notes-input" id="noteInput${i}" placeholder="What did you learn or practice today? Any suggestions for the site?">${userNotes[i] || ''}</textarea>
+            <button class="submit-notes" id="submitBtn${i}" ${alreadyDoneToday ? 'disabled' : ''} onclick="submitNotes(${i})">
+              ${alreadyDoneToday ? 'Already Completed Today' : 'Submit Reflection & Mark Complete'}
+            </button>
+          `;
+        } else {
+          contentHTML += '<p style="color:var(--accent);">Complete previous days to unlock this task.</p>';
+        }
+
+        contentHTML += '</div>';
+        item.innerHTML = contentHTML;
+        taskList.appendChild(item);
+
+        item.querySelector('.task-header').addEventListener('click', () => {
+          item.querySelector('.task-content').classList.toggle('show');
+        });
+      }
+    }
+
+    function submitNotes(day) {
+      const input = document.getElementById(`noteInput${day}`);
+      const notes = input ? input.value.trim() : '';
+      
+      if (!notes) {
+        alert('Please write a short reflection (what you learned or practiced) before marking the day complete!');
+        return;
+      }
+
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const today = new Date().toDateString();
+      if (lastCheckInDateStr === today) {
+        alert("You have already completed today's task!");
+        return;
+      }
+
+      let newStreak = 1;
+      if (lastCheckInDateStr && isConsecutive(lastCheckInDateStr)) {
+        newStreak = streak + 1;
+      }
+
+      const newDay = Math.min(currentDay + 1, TOTAL_DAYS);
+
+      db.collection('users').doc(user.uid).collection('notes').doc(`day${day}`).set({
+        note: notes,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        userNotes[day] = notes;
+
+        db.collection('users').doc(user.uid).update({
+          daysCompleted: newDay,
+          streak: newStreak,
+          lastCheckIn: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          currentDay = newDay;
+          streak = newStreak;
+          lastCheckInDateStr = today;
+          updateUI();
+          alert(`Great job! Day ${day}/${TOTAL_DAYS} completed!\nCurrent streak: ${newStreak} 🔥 Keep building those soft skills!`);
+        });
+      }).catch(err => {
+        alert("Error saving progress: " + err.message);
+      });
+    }
+
+    function isConsecutive(prevDateStr) {
+      if (!prevDateStr) return false;
+      const prev = new Date(prevDateStr);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      return prev.toDateString() === yesterday.toDateString();
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById('userInfo').style.display = 'flex';
+        
+        let name = user.displayName || user.email?.split('@')[0] || 'User';
+        name = capitalizeName(name);
+        document.getElementById('displayName').textContent = name;
+
+        const userRef = db.collection('users').doc(user.uid);
+        userRef.get().then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            currentDay = data.daysCompleted || 0;
+            streak = data.streak || 0;
+            lastCheckInDateStr = data.lastCheckIn ? new Date(data.lastCheckIn.toDate()).toDateString() : null;
+          } else {
+            userRef.set({
+              daysCompleted: 0,
+              streak: 0,
+              lastCheckIn: null
+            });
+          }
+
+          userRef.collection('notes').get().then(snapshot => {
+            userNotes = {};
+            snapshot.forEach(d => {
+              const dayNum = parseInt(d.id.replace('day', ''));
+              userNotes[dayNum] = d.data().note;
+            });
+            updateUI();
+          });
+        }).catch(err => console.error(err));
+      } else {
+        window.location.href = "index.html"; // your login page
+      }
+    });
+
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      auth.signOut().then(() => window.location.href = "index.html");
+    });
+
+    document.getElementById('startLearningBtn')?.addEventListener('click', () => {
+      window.location.href = "soft-skills.html";
+    });
+  </script>
+
+</body>
+</html>

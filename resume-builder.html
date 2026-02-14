@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.08;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+        nav a:hover, nav a.active {
+            color: #818cf8;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            transition: 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        .content {
+            padding: 150px 8% 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.8rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #e2e8f0;
+            letter-spacing: -1px;
+        }
+
+        .resume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 35px;
+        }
+
+        .resume-card {
+            background: rgba(30, 41, 59, 0.75);
+            border-radius: 20px;
+            padding: 40px 30px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .resume-card.hoverable:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(129,140,248,0.25);
+            border-color: rgba(129,140,248,0.5);
+        }
+
+        .resume-icon {
+            font-size: 3.8rem;
+            margin-bottom: 20px;
+            color: #818cf8;
+        }
+
+        .resume-title {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        .resume-desc {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .pro-tip {
+            padding: 12px 18px;
+            background: rgba(129,140,248,0.08);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #c084fc;
+            font-style: italic;
+            border-left: 4px solid #818cf8;
+        }
+
+        .sample-card {
+            cursor: pointer;
+        }
+
+        .sample-card .click-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: #818cf8;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+
+        .sample-card:hover .click-icon {
+            opacity: 1;
+            transform: scale(1.2);
+            color: #c084fc;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 120px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="resume-builder.html" class="active">Resume Builder</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <h1>Build Your Professional Resume</h1>
+
+        <div class="resume-grid">
+
+            <!-- Card 1: Personal Information (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-id-card"></i></div>
+                <div class="resume-title">Personal Information</div>
+                <div class="resume-desc">
+                    Full name, professional email, phone, location, LinkedIn/GitHub profile
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Use a professional email (name@gmail.com) and update LinkedIn
+                </div>
+            </div>
+
+            <!-- Card 2: Education (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="resume-title">Education</div>
+                <div class="resume-desc">
+                    Degree, institution, year of passing, CGPA/percentage, relevant coursework
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: List most recent degree first and include final year project
+                </div>
+            </div>
+
+            <!-- Card 3: Projects (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="resume-title">Projects</div>
+                <div class="resume-desc">
+                    Academic projects, internships, personal work — describe objective, role & outcome
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Use bullet points: Problem → Your Solution → Technologies → Result
+                </div>
+            </div>
+
+            <!-- Card 4: Skills (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-tools"></i></div>
+                <div class="resume-title">Skills</div>
+                <div class="resume-desc">
+                    Technical skills, programming languages, tools, soft skills, certifications
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Match skills to job description — include keywords for ATS
+                </div>
+            </div>
+
+            <!-- Card 5: Career Objective (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="resume-title">Career Objective</div>
+                <div class="resume-desc">
+                    4-6 lines summary — your career goal, key strengths & what you bring
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Tailor it for each job application — no generic copy-paste
+                </div>
+            </div>
+
+            <!-- Card 6: Common Mistakes (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="resume-title">Avoid These Mistakes</div>
+                <div class="resume-desc">
+                    Spelling errors, irrelevant info, too long resume, poor formatting
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Keep it 1 page — clean layout, consistent font, ATS-friendly
+                </div>
+            </div>
+
+            <!-- Card 7: Achievements & Extracurriculars (No click) -->
+            <div class="resume-card">
+                <div class="resume-icon"><i class="fas fa-trophy"></i></div>
+                <div class="resume-title">Achievements & Activities</div>
+                <div class="resume-desc">
+                    Hackathons, certifications, workshops, volunteering, leadership roles
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Quantify where possible (e.g., "Organized event for 200+ students")
+                </div>
+            </div>
+
+            <!-- Card 8: View Fresher Resume Sample (ONLY THIS IS CLICKABLE) -->
+            <a href="fresher-resume-sample.html" class="resume-card sample-card">
+                <div class="resume-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="resume-title">View Fresher Resume Sample</div>
+                <div class="resume-desc">
+                    See a complete, professional fresher resume example (click to view)
+                </div>
+                <div class="pro-tip">
+                    Pro Tip: Download & customize this sample for your profile
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        function logout() {
+            alert("Logged out successfully!");
+        }
+    </script>
+
+</body>
+</html>

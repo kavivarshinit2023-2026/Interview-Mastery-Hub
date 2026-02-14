@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Mastery Hub - Start Soft Skill Practice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #1e293b;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: 600;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav a {
+            color: #cbd5e1;
+            margin: 0 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05em;
+            padding-bottom: 8px;
+        }
+        nav a:hover {
+            color: #a78bfa;
+        }
+        nav a.active {
+            color: #a78bfa;
+            border-bottom: 3px solid #a78bfa;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse 10s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+        .setup-box {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            width: 580px;
+            max-width: 95%;
+            padding: 50px 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(167, 139, 250, 0.25);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            text-align: center;
+        }
+        .new-tag {
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .setup-title {
+            font-size: 2.4em;
+            font-weight: 700;
+            margin: 0 0 20px;
+            color: #e2e8f0;
+        }
+        .setup-desc {
+            font-size: 1.2em;
+            color: #94a3b8;
+            margin-bottom: 60px;
+            line-height: 1.6;
+        }
+        .format-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .format-option {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #374151;
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 45%;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .format-option:hover {
+            border-color: #a78bfa;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.3);
+        }
+        .format-option.selected {
+            border-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.4);
+        }
+        .format-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+        .format-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .format-desc {
+            font-size: 1.05em;
+            color: #94a3b8;
+        }
+        .start-btn {
+            padding: 20px 80px;
+            background: linear-gradient(to right, #7c3aed, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.5);
+            transition: all 0.4s ease;
+            width: 100%;
+        }
+        .start-btn:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 30px 70px rgba(124, 58, 237, 0.7);
+        }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="soft-skills.html">Soft Skills</a>
+            <a href="interview-rules.html">Interview Rules</a>
+            <a href="mock-interview.html" class="active">Mock Interview</a>
+            <a href="resources.html">Resources</a>
+            <a href="auth.html">Login/Sign Up</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="setup-box">
+            <span class="new-tag">Soft Skills Focus</span>
+            <h1 class="setup-title">Practice Soft Skills with AI</h1>
+            <p class="setup-desc">
+                Welcome to your personalized soft skills coach!<br>
+                You'll have 30 minutes to practice real interview scenarios. When finished, get detailed feedback on communication, presence, and impact.
+            </p>
+
+            <div class="format-options">
+                <div class="format-option selected" onclick="selectFormat(this)">
+                    <div class="format-icon">💬</div>
+                    <div class="format-title">Conversation Mode</div>
+                    <div class="format-desc">Simulate a natural interview dialogue</div>
+                </div>
+                <div class="format-option" onclick="selectFormat(this)">
+                    <div class="format-icon">🎤</div>
+                    <div class="format-title">Record Mode</div>
+                    <div class="format-desc">Record answers and receive in-depth feedback</div>
+                </div>
+            </div>
+
+            <button class="start-btn" onclick="startInterview()">
+                Start Practice Session
+            </button>
+            
+            <script>
+                function startInterview() {
+                    // URL-la irukura type-ah eduthu actual-interview ku pass pannum
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const type = urlParams.get('type') || 'communication'; // default communication
+                    
+                    location.href = 'actual-interview.html?type=' + type;
+                }
+            </script>
+
+</body>
+</html>

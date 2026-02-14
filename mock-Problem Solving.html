@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interview - Problem Solving | Interview Mastery Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, #818cf8 0%, transparent 20%),
+                        radial-gradient(circle at 80% 20%, #c084fc 0%, transparent 20%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #818cf8; }
+
+        .back-link {
+            position: fixed;
+            top: 100px;
+            left: 50px;
+            color: #818cf8;
+            font-size: 1.3rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+        .back-link:hover { color: #c084fc; }
+
+        .mock-container {
+            padding: 150px 8% 100px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .mock-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .mock-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .mock-info {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .questions-list {
+            display: grid;
+            gap: 50px;
+        }
+        .question-item {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(129,140,248,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .question-number {
+            font-size: 1.4rem;
+            color: #818cf8;
+            margin-bottom: 20px;
+        }
+        .question-text {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .answer-box {
+            width: 100%;
+            min-height: 180px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(129,140,248,0.3);
+            border-radius: 20px;
+            padding: 25px;
+            font-size: 1.4rem;
+            color: #e2e8f0;
+            resize: vertical;
+        }
+        .answer-box:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 20px rgba(129,140,248,0.4);
+        }
+        .answer-box::placeholder {
+            color: #94a3b8;
+        }
+
+        .submit-all {
+            display: block;
+            margin: 80px auto 40px;
+            padding: 18px 70px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .submit-all:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(129,140,248,0.5);
+        }
+
+        .feedback {
+            display: none;
+            text-align: center;
+            padding: 60px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            border: 1px solid rgba(129,140,248,0.3);
+        }
+        .feedback h2 {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .feedback p {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #cbd5e1;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px;
+            text-align: center;
+            margin-top: 150px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Interview Mastery Hub</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="soft-skills.html">Soft Skills</a></li>
+                <li><a href="interview-rules.html">Interview Rules</a></li>
+                <li><a href="mock-interview.html">Mock Interview</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="auth.html">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="Problem Solving.html" class="back-link">← Back to Problem Solving</a>
+
+    <div class="mock-container">
+        <div class="mock-header">
+            <h1>Practice Mock Interview</h1>
+            <p class="mock-info">Answer 10 problem-solving questions • Use STAR method for best results</p>
+        </div>
+
+        <div class="questions-list">
+            <div class="question-item">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-text">Tell me about a time when you solved a difficult or complex problem at work.</div>
+                <textarea class="answer-box" placeholder="Use STAR method: Situation → Task → Action → Result"></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 2 of 10</div>
+                <div class="question-text">Describe a situation where you had to solve a problem without input from your manager or seniors.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 3 of 10</div>
+                <div class="question-text">Give an example of a time when you came up with a creative or innovative solution to a challenging problem.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 4 of 10</div>
+                <div class="question-text">Tell me about a time when you faced an unexpected challenge or obstacle at work. How did you handle it?</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 5 of 10</div>
+                <div class="question-text">Describe a time when you had to make a quick decision to solve an urgent problem.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 6 of 10</div>
+                <div class="question-text">Tell me about a situation where your first approach to a problem didn't work. How did you adapt or pivot?</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 7 of 10</div>
+                <div class="question-text">Give an example of when you identified a problem before it became bigger and took initiative to fix it.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 8 of 10</div>
+                <div class="question-text">Describe a time when you solved a problem with limited resources or incomplete information.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 9 of 10</div>
+                <div class="question-text">Tell me about a time you used data, analysis, or logical thinking to solve a tough issue.</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-number">Question 10 of 10</div>
+                <div class="question-text">How do you typically approach solving a new or unfamiliar problem? (Give an example if possible)</div>
+                <textarea class="answer-box" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+        </div>
+
+        <button class="submit-all" onclick="showFeedback()">Submit Answers & Get Feedback</button>
+
+        <div class="feedback" id="feedback">
+            <h2>Mock Interview Complete!</h2>
+            <p>Great effort on those tough problem-solving scenarios!</p>
+            <p><strong>Key Tips for Strong Problem-Solving Answers:</strong></p>
+            <p>• Use the <strong>STAR method</strong> every time (Situation, Task, Action, Result)</p>
+            <p>• Be specific: mention tools, steps, data, or metrics you used</p>
+            <p>• Highlight initiative, creativity, and positive outcomes</p>
+            <p>• Show logical thinking and how you learned/adapted</p>
+            <p>• Practice explaining your thought process clearly</p>
+            <p>You're building real interview power – keep grinding!</p>
+            <button class="submit-all" onclick="location.reload()">Practice Again</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Interview Mastery Hub • Building confident professionals</p>
+    </footer>
+
+    <script>
+        function showFeedback() {
+            document.getElementById('feedback').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
