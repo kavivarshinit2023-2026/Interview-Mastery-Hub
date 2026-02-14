@@ -1,7 +1,11 @@
 Project Name: Interview Mastery Hub
+
 Repo Link: https://github.com/kavivarshinit2023-2026/Interview-Mastery-Hub
+
 Type: Frontend-only static web application (no backend server required)
+
 Purpose: To help students, freshers, and early-career professionals prepare for job interviews by focusing on soft skills – the skills companies now check heavily in interviews (communication, teamwork, leadership, etc.).
+
 Key Features (Professional Summary)
 
 30-Day Soft Skills Challenge – Step-by-step daily plan to build better habits and skills
@@ -42,3 +46,4 @@ Strong focus on soft skills (rare in most interview prep tools)
 Fully offline-capable core features
 Includes resume builder + mock practice → real portfolio value
 Firebase already set up → easy to add user progress tracking later
+
